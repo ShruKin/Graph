@@ -2,17 +2,15 @@
 #include<conio.h>
 #include<stdio.h>
 #include<stdlib.h>
-
-
 int n;
 void create_graph();
-//void insert_node();
+//void insert node();
 void display();
 //void delete_node(int);
 int main() { //some functions dont work for now
 	int n,**adj,i;
-	printf("Enter number of nodes : ");
-    scanf("%d", &n);
+     printf("Enter number of nodes : ");
+     scanf("%d", &n);
     adj=(int**)malloc(n*sizeof(int));
 	for( i=0;i<n;i++)
 		{
@@ -54,7 +52,7 @@ int main() { //some functions dont work for now
     getch();
 }
  
-void create_graph(int adj[n][n],int n)
+void create_graph(int **adj,int n)
 {
     int i, max_edges, origin, destin;
     max_edges = n * (n - 1);
@@ -75,7 +73,7 @@ void create_graph(int adj[n][n],int n)
     }
 }
  
- void display(int adj[n][n],int n) 
+ void display(int **adj,int n) 
  {
     int i, j;
     for (i = 1; i <= n; i++) 
