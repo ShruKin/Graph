@@ -1,14 +1,23 @@
 #include<stdio.h>
 #include<conio.h>
+#include<stdio.h>
 #include<stdlib.h>
-#define max 20
-int adj[max][max];
+
+
 int n;
 void create_graph();
 //void insert_node();
 void display();
 //void delete_node(int);
 int main() { //some functions dont work for now
+	int n,**adj,i;
+	printf("Enter number of nodes : ");
+    scanf("%d", &n);
+    adj=(int**)malloc(n*sizeof(int));
+	for( i=0;i<n;i++)
+		{
+		adj[i]=(int*)malloc(n*sizeof(int));
+		}
     int choice;
     int node, origin, destin;
     
@@ -22,7 +31,7 @@ int main() { //some functions dont work for now
         scanf("%d", &choice);
         switch (choice) {
         	case 0:
-        		create_graph();
+        		create_graph(adj,n);
         		break;
       /* case 1:
             insert_node();
@@ -33,7 +42,7 @@ int main() { //some functions dont work for now
             delete_node(node);
             break;*/
         case 3:
-            display();
+            display(adj,n);
             break;
        case 4:
             exit(0); 
@@ -45,12 +54,9 @@ int main() { //some functions dont work for now
     getch();
 }
  
-void create_graph()
+void create_graph(int adj[n][n],int n)
 {
     int i, max_edges, origin, destin;
- 
-    printf("Enter number of nodes : ");
-    scanf("%d", &n);
     max_edges = n * (n - 1);
  
     for (i = 1; i <= max_edges; i++)
@@ -69,7 +75,7 @@ void create_graph()
     }
 }
  
- void display() 
+ void display(int adj[n][n],int n) 
  {
     int i, j;
     for (i = 1; i <= n; i++) 
