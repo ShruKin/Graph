@@ -15,6 +15,15 @@ struct graph{
     int V;
 };
 
+struct graph init_graph(struct graph g, int v);
+struct graph addEdge(struct graph g, int src, int desti, int wt);
+void print_adj_list(struct graph g);
+struct graph addVertex(struct graph g);
+int count_edges(struct graph g);
+int calc_out_degree(struct graph g, int vertex);
+int calc_in_degree(struct graph g, int vertex);
+int is_complete(struct graph g);
+
 struct graph init_graph(struct graph g, int v){
     g.adj  = (struct list*)malloc(sizeof(struct list) * v);
     g.V = v;
@@ -91,6 +100,58 @@ struct graph addVertex(struct graph g){
     return g;
 }
 
+int count_edges(struct graph g){
+    int e = 0;
+    struct node *ptr;
+    for(int i=0; i<g.V; i++){
+        ptr = g.adj[i].head;
+
+        while(ptr != NULL){
+            e++;
+            ptr = ptr->next;
+        }
+    }
+
+    return e;
+}
+
+int calc_out_degree(struct graph g, int vertex){
+    int d = 0;
+    struct node *ptr = g.adj[vertex].head;
+    while(ptr != NULL){
+        d++;
+        ptr = ptr->next;
+    }
+    return d;
+}
+
+int calc_in_degree(struct graph g, int vertex){
+    int d = 0;
+    struct node *ptr;
+    for(int i=0; i<g.V; i++){
+        ptr = g.adj[i].head;
+
+        while(ptr != NULL){
+            if(ptr->desti == vertex)
+                d++;
+            ptr = ptr->next;
+        }
+    } 
+    return d;
+}
+
+// TODO: Think of a programatic approach over mathematical
+int is_complete(struct graph g){
+    if(g.adj == NULL)
+        return 0;   //  false
+
+    else if(count_edges(g) == (g.V*(g.V-1))/2)
+        return 1;   //  true
+    
+    else
+        return 0;   //  false
+}
+
 int main(int argc, char const *argv[])
 {
     struct graph g = {NULL, 0};
@@ -103,6 +164,10 @@ int main(int argc, char const *argv[])
         printf("\n2. Display Adjacency adj");
         printf("\n3. Add Edge");
         printf("\n4. Add Vertex");
+        printf("\n5. Count Vertex");
+        printf("\n6. Count Edge");
+        printf("\n7. Degree Sequence");
+        printf("\n8. Check whether the graph is complete");
         printf("\n0. EXIT\n");
 
         printf("Enter choice: ");
@@ -131,6 +196,25 @@ int main(int argc, char const *argv[])
                 break;
 
             case 4: g = addVertex(g);   break;
+
+            case 5: printf("There are %d no. of vertices present!", g.V);   break;
+
+            case 6: printf("There are %d no. of vertices present!", count_edges(g));    break;
+
+            case 7: 
+                for(int i=0; i<g.V; i++){
+                    int indeg = calc_in_degree(g, i);
+                    int outdeg = calc_out_degree(g, i);
+                    printf("%d:- In degree: %d\tOut degree: %d\tTotal Degree: %d\n", i,  indeg, outdeg, indeg+outdeg);
+                }
+                break;
+
+            case 8:
+                if(is_complete(g))
+                    printf("The graph is complete");
+                else
+                    printf("The graph is not complete");
+                break;
         }
 
         printf("\n\n");
