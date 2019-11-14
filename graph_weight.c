@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <malloc.h>
+#include "lds.c"
 
-struct node{
+struct gnode{
     int desti, weight;
-    struct node *next;
+    struct gnode *next;
 };
 
 struct list{
-    struct node *head;
+    struct gnode *head;
 };
 
 struct graph{
@@ -35,7 +36,7 @@ struct graph init_graph(struct graph g, int v){
 }
 
 struct graph addEdge(struct graph g, int src, int desti, int wt){
-    struct node *newNode = (struct node*)malloc(sizeof(struct node));
+    struct gnode *newNode = (struct gnode*)malloc(sizeof(struct gnode));
     newNode->desti = desti;
     newNode->weight = wt;
     newNode->next = NULL;
@@ -55,7 +56,7 @@ struct graph addEdge(struct graph g, int src, int desti, int wt){
     }
 
     else{
-        struct node *ptr = g.adj[src].head;
+        struct gnode *ptr = g.adj[src].head;
         while(ptr->next != NULL){
             if(ptr->desti == desti){
                 printf("Edge already exist!");
@@ -70,7 +71,7 @@ struct graph addEdge(struct graph g, int src, int desti, int wt){
 }
 
 void print_adj_list(struct graph g){
-    struct node *ptr;
+    struct gnode *ptr;
     for(int i=0; i<g.V; i++){
         printf("%d:- ", i);
 
@@ -102,7 +103,7 @@ struct graph addVertex(struct graph g){
 
 int count_edges(struct graph g){
     int e = 0;
-    struct node *ptr;
+    struct gnode *ptr;
     for(int i=0; i<g.V; i++){
         ptr = g.adj[i].head;
 
@@ -117,7 +118,7 @@ int count_edges(struct graph g){
 
 int calc_out_degree(struct graph g, int vertex){
     int d = 0;
-    struct node *ptr = g.adj[vertex].head;
+    struct gnode *ptr = g.adj[vertex].head;
     while(ptr != NULL){
         d++;
         ptr = ptr->next;
@@ -127,7 +128,7 @@ int calc_out_degree(struct graph g, int vertex){
 
 int calc_in_degree(struct graph g, int vertex){
     int d = 0;
-    struct node *ptr;
+    struct gnode *ptr;
     for(int i=0; i<g.V; i++){
         ptr = g.adj[i].head;
 
@@ -152,6 +153,79 @@ int is_complete(struct graph g){
         return 0;   //  false
 }
 
+void BFS(struct graph g, int start){
+    if(g.adj == NULL){
+        printf("Graph does not exists!");
+        return;
+    }
+
+    if(start < 0 || start >= g.V){
+        printf("Source vertex out of bounds");
+        return;
+    }
+
+    int *visited;
+    visited = (int *)calloc(g.V, sizeof(int));
+
+    struct Queue q = {NULL, NULL};
+
+    visited[start] = 1;
+    enqueue(&q, start);
+
+    int curr;
+    struct gnode *ptr;
+    while(!is_queueEmpty(q)){
+        curr = dequeue(&q);
+        printf("%d ", curr);
+
+        ptr = g.adj[curr].head;
+        while(ptr != NULL){
+            if(!visited[ptr->desti]){
+                visited[ptr->desti] = 1;
+                enqueue(&q, ptr->desti);
+            }
+            ptr = ptr->next;
+        }
+    }
+}
+
+void DFS(struct graph g, int start){
+    if(g.adj == NULL){
+        printf("Graph does not exists!");
+        return;
+    }
+
+    if(start < 0 || start >= g.V){
+        printf("Source vertex out of bounds");
+        return;
+    }
+
+    int *visited;
+    visited = (int *)calloc(g.V, sizeof(int));
+
+    struct Stack s = {NULL};
+
+    visited[start] = 1;
+    push(&s, start);
+
+    int curr;
+    struct gnode *ptr;
+    while(!is_stackEmpty(s)){
+        curr = pop(&s);
+        printf("%d ", curr);
+
+        ptr = g.adj[curr].head;
+        while(ptr != NULL){
+            if(!visited[ptr->desti]){
+                visited[ptr->desti] = 1;
+                push(&s, ptr->desti);
+            }
+            ptr = ptr->next;
+        }
+    }
+
+}
+
 int main(int argc, char const *argv[])
 {
     struct graph g = {NULL, 0};
@@ -168,6 +242,8 @@ int main(int argc, char const *argv[])
         printf("\n6. Count Edge");
         printf("\n7. Degree Sequence");
         printf("\n8. Check whether the graph is complete");
+        printf("\n9. BFS traversal");
+        printf("\n10. DFS traversal");
         printf("\n0. EXIT\n");
 
         printf("Enter choice: ");
@@ -214,6 +290,18 @@ int main(int argc, char const *argv[])
                     printf("The graph is complete");
                 else
                     printf("The graph is not complete");
+                break;
+
+            case 9:
+                printf("Enter source vertex: ");
+                scanf("%d", &src);
+                BFS(g, src); 
+                break;
+
+            case 10:
+                printf("Enter source vertex: ");
+                scanf("%d", &src);
+                DFS(g, src); 
                 break;
         }
 
