@@ -80,7 +80,7 @@ void enqueue(struct Queue *q, int data){
     newNode->data = data;
     newNode->next = NULL;
 
-    if(q->rear == NULL)
+    if(q->rear == NULL || q->front ==  NULL)
         q->front = q->rear = newNode;
     else{
         q->rear->next = newNode;
