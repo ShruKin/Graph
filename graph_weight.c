@@ -223,7 +223,45 @@ void DFS(struct graph g, int start){
             ptr = ptr->next;
         }
     }
+}
 
+int is_cyclic(struct graph g){
+    if(g.adj == NULL){
+        printf("Graph does not exists!");
+        return 0;
+    }
+
+    struct gnode *ptr;
+    int *visited, curr;
+    visited = (int *)calloc(g.V, sizeof(int));
+
+    struct Stack s = {NULL};
+
+    for(int i=0; i<g.V; i++){
+        for(int j=0; j<g.V; j++)    //  clearing the visited array for a new DFS traversal
+            visited[j] = 0;
+        while(!is_stackEmpty(s))    //  clearing stack for each new DFS traversal
+            pop(&s);
+
+        /*  DFS traversal begins here   */
+        visited[i] = 1;
+        push(&s, i);
+
+        while(!is_stackEmpty(s)){
+            curr = pop(&s);
+            ptr = g.adj[curr].head;
+            while(ptr != NULL){
+                if(visited[ptr->desti]) //  this node is already visited?
+                    return 1;   //  then a cycle is present
+                if(!visited[ptr->desti]){   //  this node isnt visited?
+                    visited[ptr->desti] = 1;    //  visit the node once
+                    push(&s, ptr->desti);
+                }
+                ptr = ptr->next;
+            }
+        }
+    }
+    return 0;
 }
 
 int main(int argc, char const *argv[])
@@ -244,6 +282,7 @@ int main(int argc, char const *argv[])
         printf("\n8. Check whether the graph is complete");
         printf("\n9. BFS traversal");
         printf("\n10. DFS traversal");
+        printf("\n11. Is the graph cyclic");
         printf("\n0. EXIT\n");
 
         printf("Enter choice: ");
@@ -302,6 +341,13 @@ int main(int argc, char const *argv[])
                 printf("Enter source vertex: ");
                 scanf("%d", &src);
                 DFS(g, src); 
+                break;
+
+            case 11:
+                if(is_cyclic(g))
+                    printf("The graph has a cycle!");
+                else
+                    printf("The graph doesnt have a cycle!");
                 break;
         }
 
