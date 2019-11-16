@@ -264,10 +264,20 @@ int is_cyclic(struct graph g){
     return 0;
 }
 
+int handshakking(int e, int deg_seq[], int v){
+    int sum = 0;
+    for(int i=0; i<v; i++)
+        sum += deg_seq[i];
+
+    if(sum == 2*e)
+        return 1;
+    return 0;
+}
+
 int main(int argc, char const *argv[])
 {
     struct graph g = {NULL, 0};
-    int v;
+    int v, e, *deg_seq;
     int ch, src, desti, wt;
 
     while(1){
@@ -283,6 +293,7 @@ int main(int argc, char const *argv[])
         printf("\n9. BFS traversal");
         printf("\n10. DFS traversal");
         printf("\n11. Is the graph cyclic");
+        printf("\n12. Handshakking Lemma");
         printf("\n0. EXIT\n");
 
         printf("Enter choice: ");
@@ -348,6 +359,25 @@ int main(int argc, char const *argv[])
                     printf("The graph has a cycle!");
                 else
                     printf("The graph doesnt have a cycle!");
+                break;
+
+            case 12:
+                printf("Enter the no. of edges: ");
+                scanf("%d", &e);
+                printf("Enter the no. of vertices: ");
+                scanf("%d", &v);
+                
+                deg_seq = (int *)calloc(v, sizeof(int));
+                printf("The the degree of each vertex:\n");
+                for(int i=0; i<v; i++){
+                    printf("deg(V%d): ", i);
+                    scanf("%d", deg_seq[i]);
+                }
+                
+                if(handshakking(e, deg_seq, v))
+                    printf("The degree sequence is valid");
+                else
+                    printf("The degree sequence is invalid");
                 break;
         }
 
