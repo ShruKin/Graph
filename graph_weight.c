@@ -264,6 +264,38 @@ int is_cyclic(struct graph g){
     return 0;
 }
 
+void topological_sort(struct graph g){
+    struct Queue q = {NULL, NULL};
+    struct gnode *ptr;
+    int curr;
+    int *visited, *indegree;
+
+    visited = (int*)calloc(g.V, sizeof(int));
+    indegree = (int*)calloc(g.V, sizeof(int));
+
+    for(int i=0; i< g.V; i++){
+        indegree[i] = calc_in_degree(g, i);
+        if(indegree[i] == 0)    //  enqueueing all 0 indegrees, as traversal must from
+            enqueue(&q, i);     //  a node with zero indegree
+    }
+
+    while(!is_queueEmpty(q)){
+        curr = dequeue(&q);
+        printf("%d ", curr);
+        ptr = g.adj[curr].head;
+        while(ptr != NULL){
+            if(!visited[ptr->desti]){
+                indegree[ptr->desti]--;     //  removing edge when visited
+                if(indegree[ptr->desti] == 0){
+                    enqueue(&q, ptr->desti);
+                    visited[ptr->desti] = 1;
+                }
+            }
+            ptr = ptr->next;
+        }
+    }
+}
+
 int handshakking(int e, int deg_seq[], int v){
     int sum = 0;
     for(int i=0; i<v; i++)
@@ -294,6 +326,7 @@ int main(int argc, char const *argv[])
         printf("\n10. DFS traversal");
         printf("\n11. Is the graph cyclic");
         printf("\n12. Handshakking Lemma");
+        printf("\n13. Topological Sort");
         printf("\n0. EXIT\n");
 
         printf("Enter choice: ");
@@ -366,7 +399,7 @@ int main(int argc, char const *argv[])
                 scanf("%d", &e);
                 printf("Enter the no. of vertices: ");
                 scanf("%d", &v);
-                
+
                 deg_seq = (int *)calloc(v, sizeof(int));
                 printf("The the degree of each vertex:\n");
                 for(int i=0; i<v; i++){
@@ -379,6 +412,8 @@ int main(int argc, char const *argv[])
                 else
                     printf("The degree sequence is invalid");
                 break;
+
+            case 13:    topological_sort(g);    break;
         }
 
         printf("\n\n");
