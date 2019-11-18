@@ -358,7 +358,7 @@ int main(int argc, char const *argv[])
 
             case 5: printf("There are %d no. of vertices present!", g.V);   break;
 
-            case 6: printf("There are %d no. of vertices present!", count_edges(g));    break;
+            case 6: printf("There are %d no. of edges present!", count_edges(g));    break;
 
             case 7: 
                 for(int i=0; i<g.V; i++){
