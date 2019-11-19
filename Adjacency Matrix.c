@@ -27,14 +27,16 @@ int main()
     	printf("2. Create graph edgewise \n");
     	printf("3. Read graph froma csv file \n");
     	printf("4. Add edge \n");
-        printf("5. Display\n");
-        printf("6. BFS\n");
-        printf("7. DFS\n");
-        printf("8. Count edges \n");
-        printf("9. Check graph\n");
-        printf("10. Check for complete graph\n");
-        printf("11. Count even and odd degree vertices\n");
-        // printf(" 9. detect cycle in graph\n");
+    	// printf("5. Add Vertex \n");
+        printf("6. Display\n");
+        printf("7. BFS\n");
+        printf("8. DFS\n");
+        printf("9. Count edges \n");
+        printf("10. Check graph\n");
+        printf("11. Check for complete graph\n");
+        printf("12. Count even and odd degree vertices\n");
+        // printf("13. Detect cycle in graph\n");
+        // printf("14. Topological Sort\n");
         printf("0.EXIT\n");
 
         printf("Enter your choice : ");
@@ -71,27 +73,27 @@ int main()
                 add_edge(adj, n, src, desti, wt);
                 break;
 
-        	case 5:	display(adj,n);			break;
+        	case 6:	display(adj,n);			break;
 
-			case 6: 
+			case 7: 
 				printf("Enter source vertex: ");
                 scanf("%d", &src);
                 BFS(adj, n, src); 
                 break;
 
-			case 7:
+			case 8:
 				printf("Enter source vertex: ");
                 scanf("%d", &src);
                 DFS(adj, n, src); 
                 break;
 
-       		case 8:	e = count_edges(adj,n);	break;	
+       		case 9:	e = count_edges(adj,n);	break;	
 
-     		case 9:	check_graph(adj,n);	break;
+     		case 10:	check_graph(adj,n);	break;
 
-			case 10:	complete(adj,n);	break;
+			case 11:	complete(adj,n);	break;
 
-			case 11:	even_odd(adj,n);	break;
+			case 12:	even_odd(adj,n);	break;
 	
      		default:	printf("Wrong choice\n");	break;
         }
