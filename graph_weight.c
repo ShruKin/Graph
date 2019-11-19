@@ -207,18 +207,20 @@ void DFS(struct graph g, int start){
 
     visited[start] = 1;
     push(&s, start);
+    printf("%d ", start);
+
 
     int curr;
     struct gnode *ptr;
     while(!is_stackEmpty(s)){
         curr = pop(&s);
-        printf("%d ", curr);
 
         ptr = g.adj[curr].head;
         while(ptr != NULL){
             if(!visited[ptr->desti]){
                 visited[ptr->desti] = 1;
                 push(&s, ptr->desti);
+                printf("%d ", ptr->desti);
             }
             ptr = ptr->next;
         }
