@@ -155,7 +155,7 @@ int count_edges(int **adj, int n)
 	{
 		for(j=0;j<n;j++)
 		{
-			if(adj[i][j]==1)
+			if(adj[i][j])
 			e=e+1;
 		}
 	}
@@ -173,7 +173,7 @@ void check_graph(int **adj, int n)
 		sum=sum+d;	
 	}
 	edge=count_edges(adj,n);
-	if(sum== (2*edge))
+	if(sum == (2*edge))
 		printf("\n Graph is valid \n");
 	else
 	   printf("\n Graph is invalid \n");
@@ -196,7 +196,7 @@ void even_odd(int **adj, int n)
 	{
 		for(j=0;j<n;j++)
 		{
-			if(adj[i][j]==1)
+			if(adj[i][j])
 			deg++;
 		}
 		if(deg%2==0)
