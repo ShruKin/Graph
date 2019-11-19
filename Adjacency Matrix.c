@@ -15,6 +15,7 @@ void check_graph(int**,int);
 void complete(int**,int);
 void even_odd(int**,int);
 void BFS(int **adj, int n, int start);
+void DFS(int **adj, int n, int start);
 
 int main()
 { 
@@ -28,7 +29,7 @@ int main()
     	printf("4. Add edge \n");
         printf("5. Display\n");
         printf("6. BFS\n");
-        // printf("7. DFS\n");
+        printf("7. DFS\n");
         printf("8. Count edges \n");
         printf("9. Check graph\n");
         printf("10. Check for complete graph\n");
@@ -55,7 +56,7 @@ int main()
 			case 3: 
 				// printf("Enter filename: ");
 				// scanf("%s", filename);
-				strcpy(filename, "adjmats\\adjmat2.csv");
+				strcpy(filename, "adjmats\\gfg_dfs.csv");
 				read_from_file(adj, n, filename);
 
 				break;
@@ -76,6 +77,21 @@ int main()
 				printf("Enter source vertex: ");
                 scanf("%d", &src);
                 BFS(adj, n, src); 
+                break;
+
+			case 7:
+				printf("Enter source vertex: ");
+                scanf("%d", &src);
+
+				// n = 4;
+				// adj = init_adj_mat(n);
+				// add_edge(adj, n, 0, 1, 5); 
+				// add_edge(adj, n, 0, 2, 5); 
+				// add_edge(adj, n, 1, 2, 5); 
+				// add_edge(adj, n, 2, 0, 5); 
+				// add_edge(adj, n, 2, 3, 5); 
+				// add_edge(adj, n, 3, 3, 5); 
+                DFS(adj, n, src); 
                 break;
 
        		case 8:	e = count_edges(adj,n);	break;	
@@ -261,3 +277,33 @@ void BFS(int **adj, int n, int start){
 		}
 	}
 }
+
+void DFS(int **adj, int n, int start){
+	if(start < 0 || start >= n){
+        printf("Source vertex out of bounds");
+        return;
+    }
+
+	int *visited;
+    visited = (int *)calloc(n, sizeof(int));
+
+	struct Stack s = {NULL};
+
+    visited[start] = 1;
+    push(&s, start);
+	printf("%d ", start);
+
+    int curr;
+	while(!is_stackEmpty(s)){
+		curr = pop(&s);
+
+		for (int i = 0; i < n; i++){
+			if((adj[curr][i]) && (visited[i] == 0)){
+				visited[i] = 1;
+				push(&s, i);
+				printf("%d ", i);
+			}
+		}
+	}
+}
+
