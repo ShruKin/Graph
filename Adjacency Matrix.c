@@ -2,9 +2,11 @@
 #include<conio.h>
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 
 int **init_adj_mat(int);
 void add_edge(int **adj, int n, int src, int desti, int wt);
+void read_from_file(int **adj, int n, char filename[]);
 void create_graph(int**,int);
 int count_edges(int**,int);
 void display(int**,int);
@@ -15,28 +17,20 @@ void even_odd(int**,int);
 int main()
 { 
 	int n, e, **adj, i, j, src, desti, wt, choice;
-	// printf("Enter number of vertices : ");
-    // scanf("%d", &n);
-
-   	// adj=(int**)calloc(n,sizeof(int));
-	// for( i=0;i<n;i++)
-	// 	adj[i]=(int*)calloc(n,sizeof(int));
-		
-    // int choice;
-    // int node, origin, destin;
-    // int cycle;
+	char filename[100];
     
     while (1) {
     	printf("1. Initialize the graph \n");
     	printf("2. Create graph edgewise \n");
-    	printf("3. Add edge \n");
-        printf("4. Display\n");
-        // printf("5. BFS\n");
-        // printf("6. DFS\n");
-        printf("7. Count edges \n");
-        printf("8. Check graph\n");
-        printf("9. Check for complete graph\n");
-        printf("10. Count even and odd degree vertices\n");
+    	printf("3. Read graph froma csv file \n");
+    	printf("4. Add edge \n");
+        printf("5. Display\n");
+        // printf("6. BFS\n");
+        // printf("7. DFS\n");
+        printf("8. Count edges \n");
+        printf("9. Check graph\n");
+        printf("10. Check for complete graph\n");
+        printf("11. Count even and odd degree vertices\n");
         // printf(" 9. detect cycle in graph\n");
         printf("0.EXIT\n");
 
@@ -54,9 +48,17 @@ int main()
 				adj = init_adj_mat(n);
 				break;
 
-        	case 2:	create_graph(adj,n);	break;
+        	case 2:	create_graph(adj, n);	break;
 
-			case 3:
+			case 3: 
+				// printf("Enter filename: ");
+				// scanf("%s", filename);
+				strcpy(filename, "adjmats\\adjmat2.csv");
+				read_from_file(adj, n, filename);
+
+				break;
+
+			case 4:
 				printf("Enter source vertex: ");
                 scanf("%d", &src);
                 printf("Enter destination vertex: ");
@@ -66,19 +68,17 @@ int main()
                 add_edge(adj, n, src, desti, wt);
                 break;
 
-        	case 4:	display(adj,n);			break;
+        	case 5:	display(adj,n);			break;
 
-       		case 7:	e = count_edges(adj,n);	break;	
+       		case 8:	e = count_edges(adj,n);	break;	
 
-     		case 8:	check_graph(adj,n);	break;
+     		case 9:	check_graph(adj,n);	break;
 
-			case 9:	complete(adj,n);	break;
+			case 10:	complete(adj,n);	break;
 
-			case 10:	even_odd(adj,n);	break;
+			case 11:	even_odd(adj,n);	break;
 	
-     		default:
-            	printf("Wrong choice\n");
-            	break;
+     		default:	printf("Wrong choice\n");	break;
         }
 		printf("\n\n");
     }
@@ -103,6 +103,24 @@ void add_edge(int **adj, int n, int src, int desti, int wt){
 		wt = 1;	//	adj matrix should have 1
 
 	adj[src][desti] = wt;
+}
+
+void read_from_file(int **adj, int n, char filename[]){
+	FILE *fileptr;
+	fileptr = fopen(filename, "r");
+	char *record;
+	int j;
+	for(int i=0; i<n; i++){
+		char line[1024];
+		fgets(line, 1024, fileptr);
+
+		record = strtok(line,",");
+		j=0;
+		while(record != NULL){
+			adj[i][j++] = atoi(record) ;
+			record = strtok(NULL,",");
+		}
+	}
 }
  
 void create_graph(int **adj, int n)
