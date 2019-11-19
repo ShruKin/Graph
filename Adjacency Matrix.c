@@ -28,7 +28,7 @@ int main()
     
     while (1) {
     	printf("1. Initialize the graph \n");
-    	printf("2. Create the graph \n");
+    	printf("2. Create graph edgewise \n");
     	printf("3. Add edge \n");
         printf("4. Display\n");
         // printf("5. BFS\n");
@@ -94,7 +94,7 @@ int **init_adj_mat(int n){
 }
 
 void add_edge(int **adj, int n, int src, int desti, int wt){
-	if(src > n || desti > n || src< 0 || desti < 0){
+	if(src > n || desti > n || src < 0 || desti < 0){
 		printf("Source/Destination vertices are out of bounds");
 		return;
 	}
@@ -107,26 +107,30 @@ void add_edge(int **adj, int n, int src, int desti, int wt){
  
 void create_graph(int **adj, int n)
 {
-    int i, max_edges, origin, destin;
+    int i, max_edges, origin, destin, wt;
     max_edges = n * (n - 1);
- 
+
+	printf("Enter edges in source, destination, weight format(space seperated)\n");
+	printf("Enter (-1 -1 -1) to quit entering more edges\n");
     for (i = 0; i < max_edges; i++)
     {
-        printf("Enter edge %d. Enter( 0 0 ) to quit : ", i);
-        scanf("%d %d", &origin, &destin);
-        if ((origin == 0) && (destin == 0))
+        printf("Enter edge %d: ", i);
+        scanf("%d %d %d", &origin, &destin, &wt);
+
+        if((origin == -1) || (destin == -1) || (wt == -1))	//	any one -1, and break
             break;
-        if (origin > n || destin > n || origin<=0 || destin <=0)
-	    {
+
+        else if(origin > n || destin > n || origin < 0 || destin < 0){
             printf("Invalid edge!\n");
             i--;
         } 
+
 	   	else
-            adj[origin-1][destin-1] = 1;
+            adj[origin][destin] = wt;
     }
 }
  
- void display(int **adj, int n) 
+void display(int **adj, int n) 
 {
     int i, j;
 	printf("    ");
