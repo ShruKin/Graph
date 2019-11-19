@@ -82,15 +82,6 @@ int main()
 			case 7:
 				printf("Enter source vertex: ");
                 scanf("%d", &src);
-
-				// n = 4;
-				// adj = init_adj_mat(n);
-				// add_edge(adj, n, 0, 1, 5); 
-				// add_edge(adj, n, 0, 2, 5); 
-				// add_edge(adj, n, 1, 2, 5); 
-				// add_edge(adj, n, 2, 0, 5); 
-				// add_edge(adj, n, 2, 3, 5); 
-				// add_edge(adj, n, 3, 3, 5); 
                 DFS(adj, n, src); 
                 break;
 
