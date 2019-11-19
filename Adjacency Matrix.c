@@ -129,10 +129,16 @@ void create_graph(int **adj, int n)
  void display(int **adj, int n) 
 {
     int i, j;
+	printf("    ");
+	for(int i=0; i<n; i++)
+		printf("[%d] ", i);
+	printf("\n");
+
     for (i = 0; i < n; i++) 
     {
+		printf("[%d] ", i);
         for (j = 0; j < n; j++)
-            printf("%2d", adj[i][j]);
+            printf("%2d  ", adj[i][j]);
         printf("\n");
     }
 }
