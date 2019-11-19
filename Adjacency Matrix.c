@@ -3,6 +3,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include "lds.c"
 
 int **init_adj_mat(int);
 void add_edge(int **adj, int n, int src, int desti, int wt);
@@ -13,6 +14,7 @@ void display(int**,int);
 void check_graph(int**,int);
 void complete(int**,int);
 void even_odd(int**,int);
+void BFS(int **adj, int n, int start);
 
 int main()
 { 
@@ -25,7 +27,7 @@ int main()
     	printf("3. Read graph froma csv file \n");
     	printf("4. Add edge \n");
         printf("5. Display\n");
-        // printf("6. BFS\n");
+        printf("6. BFS\n");
         // printf("7. DFS\n");
         printf("8. Count edges \n");
         printf("9. Check graph\n");
@@ -70,6 +72,12 @@ int main()
 
         	case 5:	display(adj,n);			break;
 
+			case 6: 
+				printf("Enter source vertex: ");
+                scanf("%d", &src);
+                BFS(adj, n, src); 
+                break;
+
        		case 8:	e = count_edges(adj,n);	break;	
 
      		case 9:	check_graph(adj,n);	break;
@@ -94,7 +102,7 @@ int **init_adj_mat(int n){
 }
 
 void add_edge(int **adj, int n, int src, int desti, int wt){
-	if(src > n || desti > n || src < 0 || desti < 0){
+	if(src >= n || desti >= n || src < 0 || desti < 0){
 		printf("Source/Destination vertices are out of bounds");
 		return;
 	}
@@ -224,4 +232,32 @@ void even_odd(int **adj, int n)
 	}
 	printf("\n number of even degree vertices %d",even);
 	printf("\n number of odd degree vertices %d",odd);
+}
+
+void BFS(int **adj, int n, int start){
+	if(start < 0 || start >= n){
+        printf("Source vertex out of bounds");
+        return;
+    }
+
+	int *visited;
+    visited = (int *)calloc(n, sizeof(int));
+
+	struct Queue q = {NULL, NULL};
+
+    visited[start] = 1;
+    enqueue(&q, start);
+
+    int curr;
+	while(!is_queueEmpty(q)){
+		curr = dequeue(&q);
+        printf("%d ", curr);
+
+		for (int i = 0; i < n; i++){
+			if((adj[curr][i]) && (visited[i] == 0)){
+				visited[i] = 1;
+				enqueue(&q, i);
+			}
+		}
+	}
 }
