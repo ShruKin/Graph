@@ -3,6 +3,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
+int **init_adj_mat(int);
 void create_graph(int**,int);
 int count_edges(int**,int);
 void display(int**,int);
@@ -12,65 +13,76 @@ void even_odd(int**,int);
 
 int main()
 { 
-	int n,e,**adj,i,j;
-	printf("Enter number of vertices : ");
-    scanf("%d", &n);
+	int n, e, **adj, i, j;
+	// printf("Enter number of vertices : ");
+    // scanf("%d", &n);
 
-   	adj=(int**)calloc(n,sizeof(int));
-	for( i=0;i<n;i++)
-		adj[i]=(int*)calloc(n,sizeof(int));
+   	// adj=(int**)calloc(n,sizeof(int));
+	// for( i=0;i<n;i++)
+	// 	adj[i]=(int*)calloc(n,sizeof(int));
 		
     int choice;
     int node, origin, destin;
     int cycle;
     
     while (1) {
-    	printf("0. Create a graph \n");
-        printf("1.BFS\n");
-        printf("2.DFS\n");
-        printf("3.Display\n");
-        printf("4.Count edges \n");
-        printf("6.Check graph\n");
-        printf("7.Check for complete graph\n");
-         printf("8.Count even and odd degree vertices\n");
+    	printf("1. Initialize the graph \n");
+    	printf("2. Create the graph \n");
+        printf("3. Display\n");
+        // printf("4. BFS\n");
+        // printf("5. DFS\n");
+        printf("6. Count edges \n");
+        printf("7. Check graph\n");
+        printf("8. Check for complete graph\n");
+        printf("9. Count even and odd degree vertices\n");
         // printf(" 9. detect cycle in graph\n");
-        printf("5.Exit\n");
+        printf("0.EXIT\n");
+
         printf("Enter your choice : ");
         scanf("%d", &choice);
+		printf("\n");
+
         switch (choice) 
 	   	{
-        	case 0:
-        		create_graph(adj,n);
-        		break;
-        	case 3:
-            	display(adj,n);
-            	break;
-       		case 4:
-           		e= count_edges(adj,n);
-		  		break;	
-     		case 5:
-            	exit(0); 
-     		case 6:
-     			check_graph(adj,n);
+			case 0:	exit(0);	break;
+
+			case 1: 
+				printf("Enter number of vertices : ");
+				scanf("%d", &n);
+				adj = init_adj_mat(n);
 				break;
-			case 7:
-				complete(adj,n);
-				break;
-			case 8:
-             	even_odd(adj,n);
-				break;
+
+        	case 2:	create_graph(adj,n);	break;
+
+        	case 3:	display(adj,n);			break;
+
+       		case 6:	e = count_edges(adj,n);	break;	
+
+     		case 7:	check_graph(adj,n);	break;
+
+			case 8:	complete(adj,n);	break;
+
+			case 9:	even_odd(adj,n);	break;
 	
      		default:
             	printf("Wrong choice\n");
             	break;
         }
+		printf("\n\n");
     }
     getch();
 }
- 
-void create_graph(int **adj,int n)
-{
 
+int **init_adj_mat(int n){
+	int **adj=(int**)calloc(n,sizeof(int));
+	for(int i=0; i<n; i++)
+		adj[i]=(int*)calloc(n,sizeof(int));
+
+	return adj;
+}
+ 
+void create_graph(int **adj, int n)
+{
     int i, max_edges, origin, destin;
     max_edges = n * (n - 1);
  
@@ -90,17 +102,18 @@ void create_graph(int **adj,int n)
     }
 }
  
- void display(int **adj,int n) 
- {
+ void display(int **adj, int n) 
+{
     int i, j;
     for (i = 0; i < n; i++) 
     {
         for (j = 0; j < n; j++)
-            printf("%4d", adj[i][j]);
+            printf("%2d", adj[i][j]);
         printf("\n");
     }
 }
-int count_edges(int **adj,int n)
+
+int count_edges(int **adj, int n)
 {
 	printf("\n The number of vertices are %d",n);
 	int i,j,e=0;
@@ -115,7 +128,8 @@ int count_edges(int **adj,int n)
 	printf("\n The number of edges are %d \n",e);
 	return e;
 }
-void check_graph(int **adj,int n)
+
+void check_graph(int **adj, int n)
 {
 	int i,edge,sum=0,d;
 	for(i=0;i<n;i++)
@@ -130,7 +144,8 @@ void check_graph(int **adj,int n)
 	else
 	   printf("\n Graph is invalid \n");
 }
-void complete(int **adj,int n)
+
+void complete(int **adj, int n)
 {
 	int e;
 	e=count_edges(adj,n);
@@ -139,7 +154,8 @@ void complete(int **adj,int n)
 	else
 		printf("\n graph is incomplete \n");
 }
-void even_odd(int **adj,int n)
+
+void even_odd(int **adj, int n)
 {
 	int i,j,even=0,odd=0,deg=0;
 	for(i=0;i<n;i++)
