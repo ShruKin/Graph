@@ -7,6 +7,7 @@
 
 int **init_adj_mat(int);
 void add_edge(int **adj, int n, int src, int desti, int wt);
+// void add_vertex(int **adj, int n);
 void read_from_file(int **adj, int n, char filename[]);
 void create_graph(int**,int);
 int count_edges(int**,int);
@@ -29,10 +30,10 @@ int main()
     while (1) {
     	printf("1. Initialize the graph \n");
     	printf("2. Create graph edgewise \n");
-    	printf("3. Read graph froma csv file \n");
+    	printf("3. Read graph from a csv file \n");
     	printf("4. Add edge \n");
     	// printf("5. Add Vertex \n");
-        printf("6. Display\n");
+        printf("6. Display Adjacency Matrix\n");
         printf("7. BFS\n");
         printf("8. DFS\n");
         printf("9. Count edges \n");
@@ -76,6 +77,11 @@ int main()
                 scanf("%d", &wt);
                 add_edge(adj, n, src, desti, wt);
                 break;
+
+			// case 5:
+			// 	add_vertex(adj, n);
+			// 	n++;
+			// 	break;
 
         	case 6:	display(adj,n);			break;
 
@@ -134,6 +140,20 @@ void add_edge(int **adj, int n, int src, int desti, int wt){
 
 	adj[src][desti] = wt;
 }
+
+// void add_vertex(int **adj, int n){
+// 	n++;
+// 	printf("%d", n);
+// 	adj = (int **)realloc(adj, n*sizeof(int));
+// 	for(int i=0; i<n; i++)
+// 		adj[i]=(int*)realloc(adj[i], n*sizeof(int));
+
+// 	for(int i=0; i<n; i++)
+// 		adj[i][n-1] = 0;
+
+// 	for(int i=0; i<n; i++)
+// 		adj[n-1][i] = 0;
+// }
 
 void read_from_file(int **adj, int n, char filename[]){
 	FILE *fileptr;
