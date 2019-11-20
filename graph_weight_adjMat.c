@@ -341,3 +341,21 @@ int is_cyclic(int **adj, int n){
 	}
 	return 0;
 }
+
+int calc_out_degree(int **adj, int n, int v){
+	int outdegree = 0;
+	for(int i=0; i<n; i++){
+		if(adj[v][i])
+			outdegree++;
+	}
+	return outdegree;
+}
+
+int calc_in_degree(int **adj, int n, int v){
+	int indegree = 0;
+	for(int i=0; i<n; i++){
+		if(adj[i][v])
+			indegree++;
+	}
+	return indegree;
+}
