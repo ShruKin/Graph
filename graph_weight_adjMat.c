@@ -17,6 +17,9 @@ void even_odd(int**,int);
 void BFS(int **adj, int n, int start);
 void DFS(int **adj, int n, int start);
 int is_cyclic(int **adj, int n);
+int calc_out_degree(int **adj, int n, int v);
+int calc_in_degree(int **adj, int n, int v);
+void topological_sort(int **adj, int n);
 
 int main()
 { 
@@ -37,7 +40,7 @@ int main()
         printf("11. Check for complete graph\n");
         printf("12. Count even and odd degree vertices\n");
         printf("13. Detect cycle in graph\n");
-        // printf("14. Topological Sort\n");
+        printf("14. Topological Sort\n");
         printf("0.EXIT\n");
 
         printf("Enter your choice : ");
@@ -59,7 +62,7 @@ int main()
 			case 3: 
 				// printf("Enter filename: ");
 				// scanf("%s", filename);
-				strcpy(filename, "adjmats\\gfg_dfs.csv");
+				strcpy(filename, "adjmats\\hackerearth_topo_sort.csv");
 				read_from_file(adj, n, filename);
 
 				break;
@@ -102,6 +105,8 @@ int main()
                 else
                     printf("The graph doesnt have a cycle!");
                 break;
+
+			case 14:	topological_sort(adj, n);	break; 
 	
      		default:	printf("Wrong choice\n");	break;
         }
@@ -358,4 +363,33 @@ int calc_in_degree(int **adj, int n, int v){
 			indegree++;
 	}
 	return indegree;
+}
+
+void topological_sort(int **adj, int n){
+	struct Queue q = {NULL, NULL};
+    int curr, *visited, *indegree;
+
+	visited = (int*)calloc(n, sizeof(int));
+    indegree = (int*)calloc(n, sizeof(int));
+
+	for(int i=0; i<n; i++){
+        indegree[i] = calc_in_degree(adj, n, i);
+        if(indegree[i] == 0)    //  enqueueing all 0 indegrees, as traversal must from
+            enqueue(&q, i);     //  a node with zero indegree
+    }
+
+	while(!is_queueEmpty(q)){
+        curr = dequeue(&q);
+        printf("%d ", curr);
+
+        for(int i=0; i<n; i++){
+        	if((adj[curr][i]) && (!visited[i])){
+                indegree[i]--;     //  removing edge when visited
+                if(indegree[i] == 0){
+                    enqueue(&q, i);
+                    visited[i] = 1;
+                }
+            }
+        }
+    }
 }
