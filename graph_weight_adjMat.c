@@ -16,6 +16,7 @@ void complete(int**,int);
 void even_odd(int**,int);
 void BFS(int **adj, int n, int start);
 void DFS(int **adj, int n, int start);
+int is_cyclic(int **adj, int n);
 
 int main()
 { 
@@ -35,7 +36,7 @@ int main()
         printf("10. Check graph\n");
         printf("11. Check for complete graph\n");
         printf("12. Count even and odd degree vertices\n");
-        // printf("13. Detect cycle in graph\n");
+        printf("13. Detect cycle in graph\n");
         // printf("14. Topological Sort\n");
         printf("0.EXIT\n");
 
@@ -94,6 +95,13 @@ int main()
 			case 11:	complete(adj,n);	break;
 
 			case 12:	even_odd(adj,n);	break;
+
+			case 13:	
+				if(is_cyclic(adj, n))
+                    printf("The graph has a cycle!");
+                else
+                    printf("The graph doesnt have a cycle!");
+                break;
 	
      		default:	printf("Wrong choice\n");	break;
         }
@@ -155,7 +163,7 @@ void create_graph(int **adj, int n)
         if((origin == -1) || (destin == -1) || (wt == -1))	//	any one -1, and break
             break;
 
-        else if(origin > n || destin > n || origin < 0 || destin < 0){
+        else if(origin >= n || destin >= n || origin < 0 || destin < 0){
             printf("Invalid edge!\n");
             i--;
         } 
@@ -300,3 +308,36 @@ void DFS(int **adj, int n, int start){
 	}
 }
 
+int is_cyclic(int **adj, int n){
+	int *visited, curr;
+    visited = (int *)calloc(n, sizeof(int));
+
+    struct Stack s = {NULL};
+
+	for(int i=0; i<n; i++){
+		for(int j=0; j<n; j++)    //  clearing the visited array for a new DFS traversal
+            visited[j] = 0;
+        while(!is_stackEmpty(s))    //  clearing stack for each new DFS traversal
+            pop(&s);
+
+		/*  DFS traversal begins here   */
+        visited[i] = 1;
+        push(&s, i);
+
+		while(!is_stackEmpty(s)){
+			curr = pop(&s);
+
+			for (int i = 0; i < n; i++){
+				if(adj[curr][i]){
+					if(visited[i]) //  this node is already visited?
+                    	return 1;   //  then a cycle is present
+					else if(!visited[i]){   //  this node isnt visited?
+						visited[i] = 1;    //  visit the node once
+						push(&s, i);
+					}
+				}
+			}
+		}
+	}
+	return 0;
+}
